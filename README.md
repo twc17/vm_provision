@@ -1,1 +1,4 @@
-init commit of vm_provision project
+vm_provision
+======
+
+CLI for provisioning virtual machines in VMWare's vShpere
