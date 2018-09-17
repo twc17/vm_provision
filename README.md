@@ -3,14 +3,14 @@ vm_provision
 
 CLI for provisioning virtual machines in VMWare's vShpere
 
-== How to Run ==
+## How to Run
 
-'''Build image'''
-{{{
+### Build image
+```
 docker build -t vm_provision .
-}}}
+```
 
-'''Run'''
-{{{
+### Run
+```
 docker run --rm --name vm_provision vm_provision:latest
-}}}
+```
