@@ -14,7 +14,7 @@ import ssl
 import sys
 import time
 
-from pyVim.connect import SmartConnect, Disconnect
+from pyVim.connect import SmartConnect, SmartConnectNoSSL, Disconnect
 from pyVmomi import vim
 from helper import *
 
@@ -61,10 +61,16 @@ def main():
     args = get_args()
 
     try:
-        service_instance = SmartConnect(host=args.host,
-                                        user=args.user,
-                                        pwd=args.password,
-                                        port=int(args.port))
+        if args.disable_ssl_verification:
+            service_instance = SmartConnectNoSSL(host=args.host,
+                                                 user=args.user,
+                                                 pwd=args.password,
+                                                 port=int(args.port))
+        else:
+            service_instance = SmartConnect(host=args.host,
+                                            user=args.user,
+                                            pwd=args.password,
+                                            port=int(args.port))
 
     except Exception as e:
         print("Could not connect to vSphere host")
