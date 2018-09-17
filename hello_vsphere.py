@@ -16,44 +16,7 @@ import atexit
 
 from pyVim import connect
 from pyVmomi import vmodl
-
-
-def get_args():
-    """Get command line arguments from the user."""
-    parser = argparse.ArgumentParser(
-            description='Standard arguments for talking to vSphere server')
-
-    # -h is reserved for 'help', so we will use -s for the host
-    parser.add_argument('-s', '--host',
-                        required=True,
-                        action='store',
-                        help='vSphere server to connect to')
-
-    # -p is being used for 'password', so we will use -o for host port
-    parser.add_argument('-o', '--port',
-                        type=int,
-                        default=443,
-                        action='store',
-                        help='Port to connect on. Default: 443')
-
-    parser.add_argument('-u', '--user',
-                        required=True,
-                        action='store',
-                        help='Username to use when connecting to vSphere host')
-
-    parser.add_argument('-p', '--password',
-                        required=False,
-                        action='store',
-                        help='Password to use when connecting to vSphere host')
-
-    args = parser.parse_args()
-
-    if not args.password:
-        args.password = getpass.getpass(
-                prompt='Enter password for host %s and user %s: ' %
-                (args.host, args.user))
-
-    return args
+from helper import *
 
 
 def main():
