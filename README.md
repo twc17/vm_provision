@@ -12,5 +12,5 @@ docker build -t vm_provision .
 
 ### Run
 ```
-docker run --rm --name vm_provision vm_provision:latest
+docker run --rm --name vm_provision vm_provision:latest <PYTHON_SCRIPT.py> <-args>
 ```
