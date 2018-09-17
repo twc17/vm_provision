@@ -42,10 +42,71 @@ def get_vm(content, name):
     Returns:
         vm VM object
     """
-    try:
-        name = unicode(name, 'utf-8')
-    except TypeError:
-        # Need to find a better way to hand type errors for vm names
-        pass
-
     vm = None
+
+    container = content.viewManager.CreateContainerView(
+            content.rootFolder, [vim.VirtualMachine], True)
+
+    for c in container.view:
+        if c.name == name:
+            vm = c
+            break
+
+    return vm
+
+
+def main():
+    """Generate HTML5 console for a specific VM"""
+
+    args = get_args()
+
+    try:
+        service_instance = SmartConnect(host=args.host,
+                                        user=args.user,
+                                        pwd=args.password,
+                                        port=int(args.port))
+
+    except Exception as e:
+        print("Could not connect to vSphere host")
+        print(repr(e))
+        sys.exit(1)
+
+    atexit.register(Disconnect, service_instance)
+
+    content = service_instance.RetrieveContent()
+
+    vm = get_vm(content, args.name)
+    vm_moid = vm._moId
+
+    vcenter_data = content.setting
+    vcenter_settings = vcenter_data.setting
+    console_port = '7331'
+
+    for item in vcenter_settings:
+        key = getattr(item, 'key')
+        if key == 'VirtualCenter.FQDN':
+            vcenter_fqdn = getattr(item, 'value')
+
+    session_manager = content.sessionManager
+    session = session_manager.AcquireCloneTicket()
+
+    vc_cert = ssl.get_server_certificate((args.host, int(args.port)))
+    vc_pem = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM,
+                                             vc_cert)
+    vc_fingerprint = vc_pem.digest('sha1')
+
+    print("Open the following URL in your browser to access the \
+          remote console.\n")
+    print("You have 60 seconds to open the URL, or the session \
+          will be terminted.\n")
+    print("http://" + args.host + ":" + console_port + "/console/?vmId="
+          + str(vm_moid) + "&vmName=" + args.name + "&host=" + vcenter_fqdn
+          + "&sessionTicket=" + session + "%thumbprint="
+          + vc_fingerprint.decode('utf-8'))
+    print("Waiting 60 seconds, then exit")
+    time.sleep(60)
+
+
+# Run program
+if __name__ == "__main__":
+    main()
