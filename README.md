@@ -3,6 +3,10 @@ vm_provision
 
 CLI for provisioning virtual machines in VMWare's vShpere
 
+Docker image based off official Python image
+
+https://hub.docker.com/_/python/
+
 ## How to Run
 
 ### Build image
