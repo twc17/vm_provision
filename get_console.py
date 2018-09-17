@@ -107,7 +107,7 @@ def main():
           will be terminted.\n")
     print("http://" + args.host + ":" + console_port + "/console/?vmId="
           + str(vm_moid) + "&vmName=" + args.name + "&host=" + vcenter_fqdn
-          + "&sessionTicket=" + session + "%thumbprint="
+          + "&sessionTicket=" + session + "&thumbprint="
           + vc_fingerprint.decode('utf-8'))
     print("Waiting 60 seconds, then exit")
     time.sleep(60)
