@@ -101,15 +101,15 @@ def main():
                                              vc_cert)
     vc_fingerprint = vc_pem.digest('sha1')
 
-    print("Open the following URL in your browser to access the \
-          remote console.\n")
-    print("You have 60 seconds to open the URL, or the session \
-          will be terminted.\n")
+    print("\nOpen the following URL in your browser to access the"
+          + " remote console.\n")
+    print("You have 60 seconds to open the URL, or the session"
+          + " will be terminted.\n")
     print("http://" + args.host + ":" + console_port + "/console/?vmId="
           + str(vm_moid) + "&vmName=" + args.name + "&host=" + vcenter_fqdn
           + "&sessionTicket=" + session + "&thumbprint="
           + vc_fingerprint.decode('utf-8'))
-    print("Waiting 60 seconds, then exit")
+    print("\nWaiting 60 seconds, then exit")
     time.sleep(60)
 
 
