@@ -25,10 +25,16 @@ def main():
     args = get_args()
 
     try:
-        service_instance = connect.SmartConnect(host=args.host,
-                                                user=args.user,
-                                                pwd=args.password,
-                                                port=int(args.port))
+        if args.disable_ssl_verification:
+            service_instance = connect.SmartConnectNoSSL(host=args.host,
+                                                         user=args.user,
+                                                         pwd=args.password,
+                                                         port=int(args.port))
+        else:
+            service_instance = connect.SmartConnect(host=args.host,
+                                                    user=args.user,
+                                                    pwd=args.password,
+                                                    port=int(args.port))
 
         atexit.register(connect.Disconnect, service_instance)
 
