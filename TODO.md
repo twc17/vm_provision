@@ -1,3 +1,2 @@
 # TODO
-- Add docopt to requirements.txt
-- Change from ArgumentParser to docopt
+- Research different arg parsers, see if ArgumentParser is the best
